@@ -1,7 +1,6 @@
-const {signup,signin,updateuser,deleteinguser,getuser}=require("../controller/userfunction")
-
+const {signup,signin,updateuser,deleteinguser,getuser,addingconnection,addinggroup}=require("../controller/userfunction")
 const express= require("express")
-const  router= express.Router();
+const  router= express.Router()
 // here  we are using this for getting all the user
 router.get('/getuser',getuser)
 // here  we are adding newuser  into user 
@@ -12,4 +11,7 @@ router.post('/login',signin)
 router.put('/updateuser/:id',updateuser)
 // here we are deleting the user
 router.delete('/deleteuser/:id',deleteinguser)
-export   default router
+// here we are going  to add the   connection  addition part
+router.patch('/addconncetion/:id',addingconnection)
+router.patch('/addgroup/:id',addinggroup)
+module.exports=router

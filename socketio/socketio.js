@@ -1,10 +1,8 @@
 const express= require("express")
 const http= require("http")
-const socketio= require("socket-io")
+const socketio= require("socket.io")
 const app= new express()
-
 const serever=http.createServer(app);
-const port = process.env.PORT ||5432
 const io= socketio(serever)
 io.on('connection',(socket)=>{
     console.log(`connected ${socket.id}`);
@@ -17,5 +15,5 @@ socket.on("disconnect",()=>{
 })
 }
 )
-export{serever,app,io}
+module.exports={serever,app,io}
 

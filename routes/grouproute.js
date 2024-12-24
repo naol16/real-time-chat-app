@@ -4,7 +4,7 @@ const  router= express.Router();
 //listing all the users
 router.get('/groups',listofgroups)
 // adding user  into   the group
-router.post('/new/groupid/:userid',adduser)
+router.post('/new/:groupid/:userid',adduser)
 // adding groups into   group
 router.post("/addgroup",groupcreation)
 router.post("/addmessage/:groupid/:messageid",addmessage)
@@ -14,4 +14,4 @@ router.put('/group/:groupid',updatingroup)
 router.delete('/deletegroup/:groupid',deletegroup)
 // removing the user  from the group
 router.delete('/deleteuser/:groupid/:userid',removeuser)
-export   default router
+module.exports=router

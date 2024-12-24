@@ -8,5 +8,5 @@ router.post('/add/private/:id',creatingmessagetoprivate)
 // adding the message  to the group
 router.post('/add/group/:id',creatingmessagetopublic)
 // deleting message
-router.delete('/delete:id',deletingmessage)
-export   default router
+router.delete('/delete/:id',deletingmessage)
+module.exports=router

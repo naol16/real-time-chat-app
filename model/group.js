@@ -8,4 +8,4 @@ const groupschema=mongoose.Schema({
      [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }] 
     })
 const groupmodel=mongoose.model("Group",groupschema);
-export{groupschema,groupmodel}
+module.exports={groupschema,groupmodel}

@@ -7,7 +7,7 @@ const {groupchatname,userid }=req.body;
 try{
 const newgroup= new groupmodel(
 {groupchatname:groupchatname,
-user:[userid],
+userIds:[userid],
 messageIds: []
  }
 )
@@ -52,6 +52,9 @@ catch(error){
 async function  addmessage(req,res){
 const messageid=req.params.messageid
 const groupid=req.params.groupid
+if (!messageid || !groupid){
+    return res.status(404).send("error on the server");
+}
 try{
 const update=await  groupmodel.findByIdAndUpdate(groupid,{
 $push:{messageIds:messageid}
@@ -70,12 +73,18 @@ catch(error){
 async function  removeuser(req,res){
     const userid =req.params.userid
     const groupid=req.params.groupid
+    if (!userid || !groupid){
+        res.status(404).send(" the user or the group id is not found")
+    }
     try{
-const deleted=await groupmodel.findByIdAndRemove(groupid,
+const deleted=await groupmodel.findByIdAndDelete(groupid,
 {
  $pull:{userIds:userid}
 }
 )
+if (!deleted){
+    res.status(404).send('group is not found')
+}
 res.status(200).send(`${deleted} deleted user`)
     }
 catch(error){
@@ -85,10 +94,17 @@ catch(error){
 }
 async function deletegroup(req,res){
     const groupid= req.params.groupid
+    if (!groupid){
+        res.status(404).send("there is error")
+    }
     try{
-    const deleted =  await groupmodel.findByIdAndRemove(groupid)
+    const deleted =  await groupmodel.findByIdAndDelete(groupid)
     console.log(deleted);
-    res.status(200).send(`${deleted} deleted  the group`)
+    if (!deleted){
+    return res.status(404).send("there is error on deleting")
+
+    }
+     return res.status(200).send(`${deleted} deleted  the group`)
     }
     catch(error){
         console.log(error);
@@ -107,6 +123,9 @@ async function updatingroup(req,res){
         }
 
         },{new:true})
+    if (!update){
+        return res.status(404).json('not updated there is error')
+    }
       return res.status(200).json(update);
 
     }
@@ -119,4 +138,4 @@ async function updatingroup(req,res){
 
 
 
-export{groupcreation,listofgroups,adduser,addmessage,removeuser,updatingroup,deletegroup}
+module.exports={groupcreation,listofgroups,adduser,addmessage,removeuser,updatingroup,deletegroup}

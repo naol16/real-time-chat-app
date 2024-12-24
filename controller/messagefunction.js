@@ -1,6 +1,9 @@
 const {messageschema,messagemodel}=require("../model/message")
 async  function findingthemessage(req,res){
     const messageid= req.params.id
+    if(!messageid){
+        return res.status(404).send("there is error")
+    }
     try{
     const message= await messagemodel.findById(messageid);
     res.status(200).json(message)
@@ -14,9 +17,12 @@ catch(error){
 }
 async  function deletingmessage(req,res){
 const messageid= req.params.id
+if (!messageid){
+    return res.status(404).send("there is error");
+}
 try{
- const  message= await messagemodel.findByIdAndRemove(messageid);
- res.status(200).send("deleted successfully")
+ const  message= await messagemodel.findByIdAndDelete(messageid);
+ return res.status(200).send("deleted successfully")
  
     }
     catch(error){
@@ -28,15 +34,16 @@ try{
 }
 // here we have to create message 
 async function creatingmessagetoprivate(req,res){
-    const {messagetype,messagesender,messagereciver}=req.body;
+    const senderid=req.params.id
+    const {message,messagereciver}=req.body;
     try{
     const messages=  new messagemodel ({
-        messagetype:messagetype,
-        messagesender:messagesender,
+        messagetype:message,
+        messagesender:senderid,
         messagereciver:messagereciver,
     })
     await messages.save();
-    res.status(201).json({
+    return res.status(201).json({
         "message":"successfully created"
     })
 }
@@ -48,15 +55,16 @@ catch(error){
 }
 }
 async function creatingmessagetopublic(req,res){
-    const {messagetype,messagesender,messagereciver,messagegroup}=req.body;
+    const senderid=req.params.id
+    const {message,messagegroup}=req.body;
     try{
     const messages= new messagemodel ({
-        messagetype:messagetype,
-        messagesender:messagesender,
-        messagereciver:messagereciver,
+        messagetype:message,
+        messagesender:senderid,
+        messagegroup:messagegroup
     })
    await  messages.save();
-   res.status(201).json({
+   res.status(200).json({
     'message':"message created successfully",
     data:messages
    })
@@ -68,4 +76,4 @@ catch(error){
     })
 }
 }
-export {findingthemessage,deletingmessage,creatingmessagetoprivate,creatingmessagetopublic}
+module.exports={findingthemessage,deletingmessage,creatingmessagetoprivate,creatingmessagetopublic}

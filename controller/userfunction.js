@@ -25,24 +25,57 @@ function id(object){
 //it is used for getting all the users
 async function getuser(req,res){
     const users= await usermodel.find();
-    res.json(send(users));
+    return res.status(200).json(users);
 }
 // deleting the user 
 async function deleteinguser(req,res){
     const userid = req.params.id
     try{
-    const deleted= await usermodel.findByIdAndRemove(userid);
-    res.send(deleted);
+    const deleted= await usermodel.findByIdAndDelete(userid);
+    return res.send(deleted);
     }
     catch(error){
+        res.status(404).send("there is error")
         console.log(error);
     }
 }
 // updating specific user status
+//here I have to add conncection as well as  the  the group
+async  function addingconnection(req,res){
+const userid =req.params.id
+const {useridadd}= req.body;
+try{
+const result = await usermodel.findByIdAndUpdate(userid,{
+    $push:{connections:useridadd}
+})
+res.status(200).json(result)
+}
+catch(error){
+    console.log(error)
+    res.status(500).json({"error":"there is server error"})
+}
+}
+async  function  addinggroup(req,res){
+const userid = req.params.id
+const {groupid}=req.body
+try{
+const result = await usermodel.findByIdAndUpdate(userid,{
+    $push:{groups:groupid}
+})
+res.status(200).json(result)
+}
+catch(error){
+    console.log(error)
+    res.status(500).json({"error":"there is server error"})
+}
+
+
+
+}
 async function updateuser(req,res){
     const  userid= req.params.userid;
     const{name,username,email,password,groups,connections}=req.body;   
-    const  result=  await  usermodel.findByIdAndUpdate({userid},{
+    const  result=  await usermodel.findByIdAndUpdate(userid,{
         $set:{name:name,
              username:username,
              email:email,
@@ -50,13 +83,16 @@ async function updateuser(req,res){
        }
     }
     )
+    if (!result){
+       return  res.status(404).send('there is error')
+    }
 }
 async function signup(req,res){
- const{name,username,email,password,profilepicture,groups,connection}=req.body;
+ const {name,username,email,password,profilepicture,groups,connection}=req.body;
     if (!name || typeof name !== 'string' || !username || typeof username !== 'string' ||  !email || typeof email !== 'string' || !emailvalidation(email) || !passwordvalidation(password)){
        return res.status(400).send("you have  entered  incorrect data type or there is null value")
     }
-    const value= await User.find({email:email})
+    const value= await usermodel.find({email:email})
     console.log(value)
     if(value.length>=1){
          return res.status(409).json({error:'the user exists'})
@@ -68,15 +104,13 @@ async function signup(req,res){
     username:username,
     email:email,
     password:hashedpassword,
-    profilepicture:[],
-    groups:[],
-    connections:[],
 })
    const saveduser=await newvalue.save();
    console.log("saveduser",saveduser);
    res.status(201).json({message:'user registetered successfully'})
     }
     catch(error){
+        res.status(404).send("there is error")
         console.error(error);
 }
 
@@ -88,7 +122,7 @@ async function signin(req,res){
 }
 try{
     const hashed= await bcrypt.hash(password,saltround);
-    const answer = await User.find({ email:email })
+    const answer = await usermodel.find({ email:email })
     if(answer.length<1){
         console.log(answer)
        return  res.status(401).send("user does not exist")
@@ -104,9 +138,10 @@ try{
 
 catch(error){
     console.error("there is error",error);
+    return res.status(500).send("there is error")
     
 }
 
 }
 
-module.exports={signin,signup,updateuser,deleteinguser,getuser}
+module.exports={signin,signup,updateuser,deleteinguser,getuser,addingconnection,addinggroup}

@@ -8,9 +8,9 @@ const userschema=mongoose.Schema(
      email:String,
      password:String,
      profilepicture:String,
-     groups:[groupschema],
+     groups:[{type:mongoose.Schema.Types.ObjectId,ref:'Group'}],
      connections:[{type:mongoose.Schema.Types.ObjectId,ref:'User'}],
  }
 )
 const usermodel = mongoose.model('User',userschema)
-export { usermodel,userschema}
+module.exports = { usermodel,userschema}

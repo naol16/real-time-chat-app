@@ -9,4 +9,4 @@ const messageschema= mongoose.Schema({
     messagegroup:{type:mongoose.Schema.Types.ObjectId,ref:'Group'},
 },{timestamps:true})
 const messagemodel= mongoose.model("Message",messageschema);
-export  {messageschema,messagemodel}
+module.exports={messageschema,messagemodel}
