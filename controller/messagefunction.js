@@ -1,5 +1,4 @@
 const {messageschema,messagemodel}=require("../model/message")
-const {serever,app,io,users}=require("../socketio/socketio")
 async  function findingthemessage(req,res){
     const messageid= req.params.id
     if(!messageid){
@@ -44,16 +43,24 @@ async function creatingmessagetoprivate(req,res){
         messagereciver:messagereciver,
     })
     await messages.save();
-    const recipientSocketId = users[recipientId];
+    const users=req.users
+    const recipientSocketId = users[senderid];
     if (recipientSocketId) {
-      io.to(recipientSocketId).emit("message-received", {
+      req.io.to(recipientSocketId).emit("message-received", {
         senderid,
         message,
         timestamp: messages.createdAt,
       });
     }
+    else  {
+        req.io.emit("sendmessage",{
+            senderid,
+            message,
+            timestamp: messages.createdAt,
+});
+console.log(`User ${messagereciver} is offline. Message will be delivered later.`);
+}
 
-    res.status(201).json({ message: "Message sent successfully", data: newMessage })
     return res.status(201).json({
         "message":"successfully created"
     })
@@ -76,12 +83,17 @@ async function creatingmessagetopublic(req,res){
     })
    await  messages.save();
 
-   io.to(groupId).emit("message-received", {
+//    req.io.to(messagegroup).emit("message-received", {
+//     senderid,
+//     messagegroup,
+//     timestamp: messages.createdAt,
+//   });
+  req.io.emit("sendmessage",{
     senderid,
-    groupId,
-    content,
+    message,
     timestamp: messages.createdAt,
-  });
+});
+  req.io.emit("recived",messages)
 
 
    
