@@ -1,4 +1,5 @@
 const {messageschema,messagemodel}=require("../model/message")
+const {serever,app,io,users}=require("../socketio/socketio")
 async  function findingthemessage(req,res){
     const messageid= req.params.id
     if(!messageid){
@@ -43,6 +44,16 @@ async function creatingmessagetoprivate(req,res){
         messagereciver:messagereciver,
     })
     await messages.save();
+    const recipientSocketId = users[recipientId];
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("message-received", {
+        senderid,
+        message,
+        timestamp: messages.createdAt,
+      });
+    }
+
+    res.status(201).json({ message: "Message sent successfully", data: newMessage })
     return res.status(201).json({
         "message":"successfully created"
     })
@@ -64,6 +75,16 @@ async function creatingmessagetopublic(req,res){
         messagegroup:messagegroup
     })
    await  messages.save();
+
+   io.to(groupId).emit("message-received", {
+    senderid,
+    groupId,
+    content,
+    timestamp: messages.createdAt,
+  });
+
+
+   
    res.status(200).json({
     'message':"message created successfully",
     data:messages

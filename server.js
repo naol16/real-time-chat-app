@@ -1,4 +1,4 @@
-const {app,serever,io} =require("./socketio/socketio")
+const {app,serever,io,users} =require("./socketio/socketio")
 const express= require("express")
 const  userroute=require("./routes/userroute")
 const  grouproute=require("./routes/grouproute")

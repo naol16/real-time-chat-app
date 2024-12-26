@@ -1,6 +1,5 @@
 const mongoose= require("mongoose")
 const groupschema=require("./group")
-
 const userschema=mongoose.Schema(
     {
     name:String,

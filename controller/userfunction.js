@@ -1,4 +1,5 @@
 const { usermodel,userschema} = require("../model/user")
+const { io, users } = require("./socketio");
 const bcrypt= require('bcrypt')
 const saltround=10
 function emailvalidation(email){
