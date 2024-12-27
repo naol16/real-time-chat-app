@@ -1,4 +1,5 @@
 const { usermodel,userschema} = require("../model/user")
+var jwt = require('jsonwebtoken');
 const bcrypt= require('bcrypt')
 const saltround=10
 function emailvalidation(email){
@@ -132,8 +133,14 @@ try{
         return res.status(401).json({message:'incorrect password'})
     }
     const objectid=answer[0]._id;
-    
-    return res.status(200).json({welcome:answer[0].name,userId:objectid})
+    const username=answer[0].name
+    const secretkey=process.env.secretkey
+    console.log(secretkey);
+    const  token= jwt.sign({objectid,username},secretkey,{
+        expiresIn:"2d",
+    })
+    console.log(token)
+    return res.status(200).json({welcome:answer[0].name,userId:objectid,token:token})
 }
 
 catch(error){

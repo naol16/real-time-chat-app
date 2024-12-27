@@ -5,5 +5,3 @@ const  socket=io("http://localhost:6214")
 socket.on("sendmessage",(data)=>{
     console.log(data);
 })
-
-socket.on("")
