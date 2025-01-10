@@ -5,7 +5,7 @@ export default  {
   ],
   theme: {
     extend: {
-      backgroundImage: { 'radial-gradient': 'radial-gradient(circle at center, #1A1A1A, #333333, #000000)', }
+      backgroundImage: { 'radial-gradient': 'radial-gradient(circle at 25% 30%,#43116A,#0A1832 25%, #000000)', }
     },
   },
   plugins: [],
