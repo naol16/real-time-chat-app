@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Home() {
   return (
@@ -20,15 +21,19 @@ function Home() {
       </div>
     <div className='mt-40 b'>
       <button className='border-8 border-white text-black bg-white  rounded-md  hover:bg-gray-100 '>
+       <Link to="/signup">
        sign up with in email
+       </Link>
       </button>
     </div>
     <div className='flex justify-between text-white pt-20'>
       <div className='text-[#B9C1BE]'>
       <p>existing account </p>
       </div>
-      <div className='pl-2'>
+      <div  className='pl-2'>
+        <Link to="/signin">
         login
+        </Link>
       </div>
     </div>
     </div>

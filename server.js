@@ -1,11 +1,17 @@
 const {serever,io,users,app} =require("./socketio/socketio")
 const express= require("express")
+const cors= require("cors")
 const  userroute=require("./routes/userroute")
 const  grouproute=require("./routes/grouproute")
 const  messageroute=require("./routes/messageroute")
 const { default: mongoose } = require("mongoose")
+
 require('dotenv').config()
-const port =process.env.port ||7000
+app.use(cors({
+    orgins:'http://localhost:5173/signup'
+}
+));
+const port =process.env.port ||9000
 app.use(express.json())
 app.use('/user',(req,res,next)=>{
     req.io=io

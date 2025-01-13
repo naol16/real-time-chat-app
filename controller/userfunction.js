@@ -108,7 +108,7 @@ async function signup(req,res){
 })
    const saveduser=await newvalue.save();
    console.log("saveduser",saveduser);
-   res.status(201).json({message:'user registetered successfully'})
+   return res.status(201).json({message:'user registetered successfully'})
     }
     catch(error){
         res.status(404).send("there is error")
