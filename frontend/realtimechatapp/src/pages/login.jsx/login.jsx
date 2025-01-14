@@ -62,7 +62,7 @@ return (
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
           Email address
         </label>
-        <div className="mt-2">
+        <div className="mt-2 pl-5">
           <input
             id="email"
             name="email"
