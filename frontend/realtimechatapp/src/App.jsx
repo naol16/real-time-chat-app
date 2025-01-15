@@ -7,17 +7,16 @@ import Usergrouplist from './component/userandgrouplist/userandgrouplist'
 function App() {
   return (
   <>
-  {/* <Router>
+  <Router>
   <Routes>
  <Route  path="/"  element={<Home/>}>
  </Route>
  <Route path="/signup"  element={<Signup/>}>
 </Route>
 <Route path="/signin"  element={<Signin/>}></Route>
+<Route path="/userlist"  element={<Usergrouplist/>}></Route>
  </Routes>
-</Router> */}
- <Usergrouplist/>
-
+</Router>
     </>
   )
 }

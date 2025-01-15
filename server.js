@@ -7,9 +7,7 @@ const  messageroute=require("./routes/messageroute")
 const { default: mongoose } = require("mongoose")
 
 require('dotenv').config()
-app.use(cors({
-    orgins:'http://localhost:5173/signup'
-}
+app.use(cors(
 ));
 const port =process.env.port ||9000
 app.use(express.json())

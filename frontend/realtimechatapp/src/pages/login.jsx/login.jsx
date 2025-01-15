@@ -32,7 +32,11 @@ function Signin() {
       email,
       password})
     console.log(response);
-    navigate("/")
+    const  token=response.data.token
+    localStorage.setItem("token",token)
+    console.log(localStorage.getItem("token"))
+    alert(`login please ${response.data.welcome}`)
+    navigate("/userlist")
     }
     catch(error){
       console.log(error);
@@ -62,7 +66,7 @@ return (
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
           Email address
         </label>
-        <div className="mt-2 pl-5">
+        <div className="mt-2 ">
           <input
             id="email"
             name="email"
@@ -97,7 +101,7 @@ return (
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-#6366F1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-#6366F1"
+          className="flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-#6366F1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-#6366F1"
         >
         signin
         </button>
