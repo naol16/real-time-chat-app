@@ -5,24 +5,27 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import  axiosurl from "../../../axios/axios"
 import { useState,useEffect} from 'react';
 import { Result } from 'postcss';
-async function Usergrouplist() {
-
- const [users,Setusers]=useState([])
- const token= localStorage.getItem("token");
-useEffect(async()=>{
+function Usergrouplist() {
+ const [users,Setusers]=useState(null)
+useEffect(()=>{ 
+  const fetchdata=async()=>{
     try{
-     const result = await axiosurl.get('/user/getuser',{
+      console.log("nolawi");
+    const token= localStorage.getItem("token");
+     const {data} = await axiosurl.get('/user/getuser',{
        headers:{Authorization:`Bearer ${token}`}
      });
-     Setusers([result.data])
-   
+     console.log(data);
+     Setusers(data)
     }
     catch(error){
-     console.log(error);
+     console.error(message)
     }
    
   }
-  ,
+fetchdata();
+}
+ ,
   []
 )
 

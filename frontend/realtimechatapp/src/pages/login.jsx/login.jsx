@@ -1,5 +1,5 @@
 import React from 'react'
-import { Await, useNavigate } from 'react-router-dom';
+import { Await, Navigate, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axiosurl from '../../../axios/axios';
