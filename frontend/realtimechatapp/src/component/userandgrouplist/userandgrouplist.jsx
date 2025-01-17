@@ -2,17 +2,27 @@
 import React from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import GroupIcon from '@mui/icons-material/Group';
+// import GroupsIcon from '@mui/icons-material/Groups';
+import { useContext } from 'react';
 import  axiosurl from "../../../axios/axios"
 import { useState,useEffect} from 'react';
+import Avatar from "@mui/material/Avatar";
 import { Result } from 'postcss';
+import Mycontext from '../mycontext/mycontext';
 function Usergrouplist() {
- const [users,Setusers]=useState(null)
+ const [users,Setusers]=useState([])
+ const [groups,Setgroups]=useState([])
+ const [group,Setgroup]=useState(false)
+ const [objectid,Setobjectid]=useState()
+ const {user,Setuser}=useContext(Mycontext)
+ //console.log(user.username)
 useEffect(()=>{ 
   const fetchdata=async()=>{
     try{
-      console.log("nolawi");
+    console.log("nolawi");
     const token= localStorage.getItem("token");
-     const {data} = await axiosurl.get('/user/getuser',{
+     const {data}= await axiosurl.get('/user/getuser',{
        headers:{Authorization:`Bearer ${token}`}
      });
      console.log(data);
@@ -24,10 +34,44 @@ useEffect(()=>{
    
   }
 fetchdata();
+
+const fetchuser=async()=>{
+  try{
+    console.log("nolawi");
+    const token= localStorage.getItem("token");
+     const {data}= await axiosurl.get('/group/groups',{
+       headers:{Authorization:`Bearer ${token}`}
+     });
+     console.log(data);
+     Setgroups(data);
+    }
+    catch(error){
+     console.error(message)
+    }
+  
+  }
+fetchuser();
+
+const fetchmessages= async()=>{
+  // try{
+  //   const {data}=
+
+  // } 
+  // catch(error){
+  //   console.log(error.message)
+  // }
+
 }
+}
+
+
  ,
   []
 )
+
+function changer(){
+  Setgroup((prevgroup)=>!prevgroup)
+  }
 
   return (
     <div className='flex  bg-radial-gradient min-h-screen'>
@@ -43,22 +87,47 @@ fetchdata();
           >
           </input>      
            </div>
+        <div  onClick={changer}>
+        
+        <GroupIcon  className='bg-white mr-5 mt-7'/>
+        <h1 className='font text-white text-lg'>groups</h1>
+        </div>
+
+
         <ul>
-      { users.map((user)=>(
-        <li key={user}>
+      {!group && users.map((user,i)=>(
+        <li key={i} >
         <div className='flex items-center mt-6'>
-              <p className='flex ml-12 mt-4'><PersonRoundedIcon className='bg-white w-[32] rounded-lg   mr-4' /> 
+              <p className='flex ml-20 mt-4'><Avatar className='bg-white w-[32] rounded-lg   mr-4' /> 
               <span className='text-white '>{user.name}</span></p>
         </div>
         </li>
       )
       )
 }
-        </ul>
+{group && groups.map((group,i)=>(
+        <li key={i}>
+        <div className='flex items-center mt-6'>
+              <p className='flex ml-20 mt-4'><Avatar className='bg-white w-[32] rounded-lg   mr-4' /> 
+              <span className='text-white '>{group.groupchatname}</span></p>
+        </div>
+        </li>
+      )
+      )
+}
+ </ul>
           </div>
-      
-    
+      <div>
+        {/* we will render the values here 
+        here and also  we will have  the input section to add the inputs 
+        
+        */}
+       <div>
+
+       </div>
+      </div>
     </div>
+  
   )
 }
 
