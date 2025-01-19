@@ -15,8 +15,13 @@ function Usergrouplist() {
  const [groups,Setgroups]=useState([])
  const [group,Setgroup]=useState(false)
  const [objectid,Setobjectid]=useState()
+ const [privatemessage,Setprivatemessage]=useState([])
+
+ const token=localStorage.getItem('token')
+//  console.log(user.username)
+console.log(token)
  const {user,Setuser}=useContext(Mycontext)
- //console.log(user.username)
+ console.log(user.userid)
 useEffect(()=>{ 
   const fetchdata=async()=>{
     try{
@@ -29,7 +34,7 @@ useEffect(()=>{
      Setusers(data)
     }
     catch(error){
-     console.error(message)
+     console.error(error.message)
     }
    
   }
@@ -46,28 +51,36 @@ const fetchuser=async()=>{
      Setgroups(data);
     }
     catch(error){
-     console.error(message)
+     console.error(error.message)
     }
   
   }
 fetchuser();
 
-const fetchmessages= async()=>{
-  // try{
-  //   const {data}=
-
-  // } 
-  // catch(error){
-  //   console.log(error.message)
-  // }
 
 }
-}
-
-
- ,
+,
   []
 )
+async function messages(reciver){
+    const sender=user.userid
+    const reciver1=reciver
+    try{
+    const {data} = await  axiosurl.get(`/message/allprivates/${sender}/${reciver1}`,{
+      headers:{
+        Authorization:`Bearer ${token}`}
+    })
+    console.log(typeof data.messages)
+  console.log(data.messages)
+
+  Setprivatemessage(data.messages)
+  console.log(privatemessage)
+  }
+  catch(error){
+    console.log(error.message)
+  }
+
+}
 
 function changer(){
   Setgroup((prevgroup)=>!prevgroup)
@@ -92,24 +105,26 @@ function changer(){
         <GroupIcon  className='bg-white mr-5 mt-7'/>
         <h1 className='font text-white text-lg'>groups</h1>
         </div>
-
-
         <ul>
-      {!group && users.map((user,i)=>(
+      {!group && users.map((user,i)=>{
+        console.log(user._id)
+
+        return(
         <li key={i} >
-        <div className='flex items-center mt-6'>
+        <div className='flex items-center mt-6' onClick={()=>{messages(user._id)}}>
               <p className='flex ml-20 mt-4'><Avatar className='bg-white w-[32] rounded-lg   mr-4' /> 
               <span className='text-white '>{user.name}</span></p>
         </div>
         </li>
-      )
+        )
+      }
       )
 }
 {group && groups.map((group,i)=>(
         <li key={i}>
         <div className='flex items-center mt-6'>
               <p className='flex ml-20 mt-4'><Avatar className='bg-white w-[32] rounded-lg   mr-4' /> 
-              <span className='text-white '>{group.groupchatname}</span></p>
+              <span className='text-white'>{group.groupchatname}</span></p>
         </div>
         </li>
       )
@@ -118,13 +133,18 @@ function changer(){
  </ul>
           </div>
       <div>
-        {/* we will render the values here 
-        here and also  we will have  the input section to add the inputs 
-        
-        */}
-       <div>
 
+       <div>
+        {privatemessage.map((priv)=>(
+        <div className='flex bg-white rounded-bl-[-10px] rounded-tl-[10px] rounded-br-[4px]  rouded-tr-[4px]  m-5 w-[200%] h-[45%]'>
+        <p className='text-black p-5'>{priv.messagetype}</p>
+          </div>))
+}
        </div>
+     <div  className="">
+      
+
+     </div>
       </div>
     </div>
   

@@ -8,7 +8,7 @@ import Usergrouplist from './component/userandgrouplist/userandgrouplist'
 import axiosurl from '../axios/axios'
 function App() {
 const navigate=useNavigate()
-const [user,Setuser]=useState();
+const [user,Setuser]=useState("null");
  const token =localStorage.getItem('token')
 async function Checker() {
 try{
